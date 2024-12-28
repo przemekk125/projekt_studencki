@@ -1,0 +1,88 @@
+Na początek przygotowałem pliki dla dwóch założonych segmentacji detektora:
+pixeli 2mm x 2mm i 5mm x 5mm, są one umieszczone w dwóch osobych katalogach
+(2mm i 5mm). Ze względu na bardzo dużą liczbę plików zdecydowałem się w
+każdym katalogu umieścić paczki TGZ z archiwami plików. Mam nadzieję, że
+ułatwi to także ich ściąganie. Dla każdej segmentacji są archiwa:
+    energy_scan.tgz  - dane dla wiązki prostopadłej o energii od 3 do 20 GeV
+                       (energia podana w nazwie pliku jest w jednostkach 0.1 GeV)
+    angle_?.tgz      - archiwa danych dla wiązki odchylonej pod danym kątem
+                       (w stopniach) w płaszczyźnie poziomiej
+    plots_?mm.tgz    - archiwa z obrazkami przypadków dla wiązki prostopadłej
+
+Dodatkowo w katalogu examples jest kilka przykładowych plików danych
+(prostopadła wiązka 10 GeV przy segmentacji 2mm i 5mm) oraz odpowiadające im
+pliki outputowe i obrazki. Jest też kilka plików PNG z obrazkami przypadków.
+
+Dane są zapisane w plikach binarnych (.dat), bez dodatkowej struktury formalnej.
+Każdy plik zawiera 25'000 przypadków, dla każdego przypadka zapisywane są:
+
+* Header (4 long int):   [0]  numer przypadku
+                          [1]  liczba depozytów z Geanta
+                         [2]  numer rozmycia
+                              (gdyby przypadek był używany więcej niż raz)
+                         [3]  liczba cel kalorymetru "zapalonych" w przypadku (Nlist poniżej)
+
+* Shift (4 double):      [0]  przesunięcie wiązki w X względem nominalnej pozycji
+                          [1]  przesunięcie wiązki w Y względem nominalnej pozycji
+                         [2]  odchylenie kątowe (w stopniach) w płaszczyźnie X
+                         [3]  odchylenie kątowe (w stopniach) w płaszczyźnie Y
+
+       przesunięcia generowane są z rozkładu płaskiego w zakresie +/- szerokość celi
+       odchylenia kątowe generowane są z rozkładu płaskiego +/- 3 stopnie
+
+* IDlist[Nlist]          lista identyfikatorów cel w przypadku
+                          długość listy Nlist=Header[3]
+
+                          Identyfikator celi:
+                                idlist = 100000*il + 100*ix + iy
+                         gdzie il to numer warstwy,
+                               ix - numer kolumny (w kierunku X)
+                               iy - numer rzędu (w kierunku Y)
+
+* Elist[Nlist]           depozyty w poszczególnych celach w jednostkach
+                          depozytu pojedynczej przechodzącej cząstki
+                         (minimum ionizing particle - MIP)
+
+
+W głównym katalogu znajdują się przykładowe kody, które pokazują jak można te dane wczytywać.
+
+
+   event_test.ipynp/event_test.py  - wczytuje pojedynczy przypadek z pliku i rysuje
+                                     rozkłady depozytów w celach. W ten sposób tworzone były
+                                    właśnie rysunki w archiwach plots_?mm i rysunki
+                                    event_test_100_?.png w katalogu examples.
+
+           Myślę, że warto pooglądać trochę te pliki, bo one dobrze obrazują problem, z którym
+          mają państwo do czynienia. Choć średni profil kaskady jest bardzo gładki i dobrze
+          opisany teoretyczną formułą, to od przypadku do przypadku występują duże fluktuacje.
+
+           Te rysunki uzmysłowiły mi też jedną kwestię, która może być istotna. Pierwszym etapem
+          w analizie danych jest naogół tzw. kalstryzacja, czyli wyszukanie wszystkich cel, które
+          należą da danej kaskady. W przypadku symulacji można założyć, że wszystkie cele mają
+          depozyty od jednej cząstki (tak to symulujemy), ale w prawdziwym eksperymencie jest
+          tło. Więc pojedyncze depozyty, które są daleko od głównej osi kaskady powinny być
+          odrzucane. Możnaby więc przyjąć, że jako input do algorytmu powinny wchodzić
+          tylko cele z jakiegoś ustalonego zakresu/otoczenia celi z maksymalnym depozytem (?).
+
+    file_test.ipynb/file_test.py  - wczytuje cały plik i rysuje średni profil podłużny
+                                    kaskady, rozład odpowiedzi w pierwszej warstwie i zależność
+                                   odpowiedzi wybranej celi od pozycji wiązki.
+
+
+    calor_test.ipynb/calor_test.py  - wczytuje cały plik i rysuje rozkład całkowitej zmierzonej
+                                    energii (kasyczne podejście do pomiaru) i całkowitej liczby
+                                   cel zapalonych w przypadku.
+
+    Jeszcze kilka słów o problemie, który chcemy rozwiązać. Klasycznym podejściem do pomiaru
+    energii jest posumowanie depozytów energii ze wszystkich cel. Jest to niestety czułe na
+    flukturacje jonizacji w celach, w szczególności "ogon" rozkładu Landaua. Dlatego też
+    nieliniowa kombinacja depozytów mogłaby się okazać lepszą estymatą niż prosta suma.
+    Dane z katalogu 'energy_scan' można wykorzystać do trenowania, a dane z 'angle_0' do
+    testowania - zawierają również energie "połówkowe", których nie ma w energy_scan...
+
+    Jeśli chodzi o wyznaczanie pozycji to w pierwszym przybliżeniu można pewnie założyć, że
+    pozycje w X i Y są niezależne. W każdej płaszczyźnie można policzyć średnią ważoną pozycji
+    środków cel, gdzie wagą może być energia w danej celi, ale też czasami używa się
+    logarytmu stosunku energii do jakiejś energii progowej (żeby uniknąć dużych fluktuacji od
+    małych depozytów). Uczenie maszynowe powinno sobie z tym poradzić, ale warto pewnie
+    sprawdzić też jak sprawuje się podejście "klasyczne", żeby ocenić jego skuteczność.
