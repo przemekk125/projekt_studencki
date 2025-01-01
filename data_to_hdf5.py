@@ -5,7 +5,7 @@ import time
 
 start_time = time.time()
 
-inname = "projekt_studencki/compr3d/5mm/energy_scan.tgz"
+inname = "compr3d/5mm/energy_scan.tgz"
 outname = "cal_data.h5"
 
 # Calorimeter structure
@@ -16,16 +16,17 @@ Ncell = NL*Nx*Ny
 Nevt = 25000
 cellevt = np.zeros((Nevt,NL,Nx,Ny),dtype=np.float32)
 
+print(f"Opening {inname}")
 with tarfile.open(inname, "r:gz") as tar:
     # List all file names
     file_names = tar.getnames()
     # Get files with .dat extension
     dat_files = [name for name in file_names if name.endswith('.dat')]
-
+    print(f"Detected {len(dat_files)} .dat files")
     with h5py.File(outname, 'w') as hf:
         data = hf.create_dataset('data', shape=(len(dat_files)*Nevt,NL,Nx,Ny),
                           compression='gzip',chunks=(1, NL, Nx, Ny),dtype=np.float32)
-        #hf.create_dataset('labels', data=labels)
+        labels = hf.create_dataset('labels', shape=len(dat_files)*Nevt,dtype=np.int16)
 
         start_index = 0
         for filename in dat_files:
@@ -66,6 +67,10 @@ with tarfile.open(inname, "r:gz") as tar:
             #Saving into hdf5 file
             end_index = start_index + Nevt
             data[start_index:end_index] = cellevt
+
+            #labels
+            label = np.int16(filename.split('_')[-1].split('.')[0])
+            labels[start_index:end_index] = np.full(Nevt,label)
     
             # Update the start_index for the next iteration
             start_index = end_index

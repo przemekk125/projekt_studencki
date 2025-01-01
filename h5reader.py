@@ -16,4 +16,4 @@ class HDF5Dataset(Dataset):
             # Load a single sample lazily
             data = hf['data'][idx]
             label = hf['labels'][idx]
-        return torch.tensor(data, dtype=torch.float32), torch.tensor(label, dtype=torch.float32)
+        return torch.tensor(data, dtype=torch.float32), torch.tensor(label, dtype=torch.int16)
