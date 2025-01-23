@@ -7,11 +7,14 @@ start_time = time.time()
 
 #   variables
 
+# file names:
 #inname_list = ["compr3d/5mm/energy_scan.tgz"]
 inname_list = ["compr3d/5mm/angle_"+str(i)+".tgz" for i in [0,1,3,5,7,9]]
-# for energy_scan
+
+# for energy_scan:
 #num_dat_files = 18
-# for angle_n files
+
+# for angle_n files:
 num_dat_files = 6
 
 outname = "angles_data.h5"
@@ -24,6 +27,7 @@ Ny = 11
 Ncell = NL*Nx*Ny
 Nevt = 25000
 cellevt = np.zeros((Nevt,NL,Nx,Ny),dtype=np.float32)
+classical_energy = np.zeros(Nevt,dtype=np.float32)
 
 i=0
 #Adding shuffle
@@ -33,6 +37,7 @@ with h5py.File(outname, 'w') as hf:
     data = hf.create_dataset('data', shape=(len(inname_list)*num_dat_files*Nevt,NL,Nx,Ny),
                             compression='gzip',chunks=(1, NL, Nx, Ny),dtype=np.float32)
     labels = hf.create_dataset('labels', shape=len (inname_list)*num_dat_files*Nevt,dtype=np.int16)
+    energy = hf.create_dataset('energy',shape=(len(inname_list)*num_dat_files*Nevt),dtype=np.float32)
     for inname in inname_list:
         print(f"Opening {inname}")
         with tarfile.open(inname, "r:gz") as tar:
@@ -50,6 +55,7 @@ with h5py.File(outname, 'w') as hf:
             for filename in dat_files:
                 #reset cellevt
                 cellevt.fill(0)
+                classical_energy.fill(0)
 
                 infile = tar.extractfile(filename)
 
@@ -79,7 +85,8 @@ with h5py.File(outname, 'w') as hf:
                     idy = idlist%100
 
                     cellevt[ievt,idl,idx,idy] = elist
-                    
+                    classical_energy[ievt] = np.sum(cellevt[ievt])
+
                     Nread += Nlist
                 
                 label = np.int16(filename.split('_')[-1].split('.')[0])
@@ -92,6 +99,8 @@ with h5py.File(outname, 'w') as hf:
                 for j in range(start_index,end_index):
                     data[shuffled_indices[j]] = cellevt[j-start_index]
                     labels[shuffled_indices[j]] = label
+                    energy[shuffled_indices[j]] = classical_energy[j-start_index]
+
         
                 # Update the start_index for the next iteration
                 start_index = end_index
