@@ -1,7 +1,11 @@
 
 # projekt_studencki
 
-Projekt studencki - fizyka. Celem projektu jest analiza danych z symulacji kalorymetru za pomocą metod uczenia maszynowego.
+Projekt studencki - fizyka. Celem projektu jest analiza danych z symulacji kalorymetru za pomocą metod uczenia maszynowego (3D CNN).
 
-* data_to_hdf5.py - konwersja danych z typu .dat na .h5 (żeby PyTorch z tym działał dobrze)
-* h5reader.py - moduł z klasą Dataset, która pomaga ładować dane
+* dane_info.txt - informacjw o surowych danych
+* data_to_hdf5.py - konwersja danych z typu .dat na .h5
+* tf_reader_example.ipynb - przykład wczytywania danych do Tensorflow
+* Deep.ipynb - głowny plik z modelem
+
+Środowisko Python - kontener Docker tensorflow/tensorflow:2.15.0-gpu-jupyter 
