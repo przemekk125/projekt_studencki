@@ -10,13 +10,18 @@ start_time = time.time()
 # file names:
 inname_list = ["compr3d/5mm/energy_scan.tgz"]
 #inname_list = ["compr3d/5mm/angle_"+str(i)+".tgz" for i in [0,1,3,5,7,9]]
+inname_list = ["compr3d/5mm/energy_scan.tgz"]
+#inname_list = ["compr3d/5mm/angle_"+str(i)+".tgz" for i in [0,1,3,5,7,9]]
 
 # for energy_scan:
+num_dat_files = 18
 num_dat_files = 18
 
 # for angle_n files:
 #num_dat_files = 6
+#num_dat_files = 6
 
+outname = "energy_data.h5"
 outname = "energy_data.h5"
 
 
@@ -28,6 +33,7 @@ Ncell = NL*Nx*Ny
 Nevt = 25000
 cellevt = np.zeros((Nevt,NL,Nx,Ny),dtype=np.float32)
 classical_energy = np.zeros(Nevt,dtype=np.float32)
+scaling_factor = 11.49
 scaling_factor = 11.49
 
 i=0
@@ -86,6 +92,7 @@ with h5py.File(outname, 'w') as hf:
                     idy = idlist%100
 
                     cellevt[ievt,idl,idx,idy] = elist
+                    classical_energy[ievt] = np.sum(cellevt[ievt])/scaling_factor
                     classical_energy[ievt] = np.sum(cellevt[ievt])/scaling_factor
 
                     Nread += Nlist
