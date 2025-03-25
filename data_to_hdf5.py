@@ -34,7 +34,6 @@ Nevt = 25000
 cellevt = np.zeros((Nevt,NL,Nx,Ny),dtype=np.float32)
 classical_energy = np.zeros(Nevt,dtype=np.float32)
 scaling_factor = 11.49
-scaling_factor = 11.49
 
 i=0
 #Adding shuffle
@@ -92,7 +91,6 @@ with h5py.File(outname, 'w') as hf:
                     idy = idlist%100
 
                     cellevt[ievt,idl,idx,idy] = elist
-                    classical_energy[ievt] = np.sum(cellevt[ievt])/scaling_factor
                     classical_energy[ievt] = np.sum(cellevt[ievt])/scaling_factor
 
                     Nread += Nlist
