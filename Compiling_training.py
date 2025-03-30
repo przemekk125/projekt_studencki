@@ -62,7 +62,7 @@ def SaveModel(a,b,c,d, filename,model):
 #Kompilacja
 metrics=[]
 for E in Energies:
-    metrics.append(deep.ValLossForE(E=E,loss_func=snorm_RMS))
+    metrics.append(ValLossForE(E=E,loss_func=snorm_RMS))
 model.compile(optimizer='adam',
               loss=snorm_RMS,
               metrics=metrics) 
