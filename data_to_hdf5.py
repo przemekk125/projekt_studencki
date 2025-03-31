@@ -10,18 +10,15 @@ start_time = time.time()
 # file names:
 inname_list = ["compr3d/5mm/energy_scan.tgz"]
 #inname_list = ["compr3d/5mm/angle_"+str(i)+".tgz" for i in [0,1,3,5,7,9]]
-inname_list = ["compr3d/5mm/energy_scan.tgz"]
-#inname_list = ["compr3d/5mm/angle_"+str(i)+".tgz" for i in [0,1,3,5,7,9]]
 
 # for energy_scan:
 num_dat_files = 18
-num_dat_files = 18
+
 
 # for angle_n files:
 #num_dat_files = 6
-#num_dat_files = 6
 
-outname = "energy_data.h5"
+
 outname = "energy_data.h5"
 
 
