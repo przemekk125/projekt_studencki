@@ -433,16 +433,16 @@ def snorm_RMS(y_true, y_pred):
     y_true = tf.cast(y_true, tf.float32)
     y_pred = tf.cast(y_pred, tf.float32)
     rms = tf.square(y_true - y_pred)
-    snorm_rms = tf.sqrt(rms) / tf.maximum(tf.sqrt(y_true), 1e-10)  # Avoid division by zero
-    return tf.reduce_mean(snorm_rms, axis=-1)
+    snorm_rms = rms / tf.maximum(tf.sqrt(y_true), 1e-10)  # Avoid division by zero
+    return tf.sqrt(tf.reduce_mean(snorm_rms, axis=-1))
 
 def norm_RMS(y_true, y_pred):
     """Square Root Normalized Root Mean Square (RMS) divided by y_true."""
     y_true = tf.cast(y_true, tf.float32)
     y_pred = tf.cast(y_pred, tf.float32)
     rms = tf.square(y_true - y_pred)
-    snorm_rms = tf.sqrt(rms) / tf.maximum(y_true, 1e-10)  # Avoid division by zero
-    return tf.reduce_mean(snorm_rms, axis=-1)
+    snorm_rms = rms / tf.maximum(y_true, 1e-10)  # Avoid division by zero
+    return tf.sqrt(tf.reduce_mean(snorm_rms, axis=-1))
 
 def norm_Huber(d):
     """Normalized Huber loss divided by y_true."""
