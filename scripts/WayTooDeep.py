@@ -397,21 +397,13 @@ def Save_model_metrics(ME, MAE, normMAE, RMS, STD, MAE2, normMAE2, RMS2, STD2, f
         writer.writerow(header)
         writer.writerows(combined_array)
 
-def norm_MAE(y_true, y_pred):
+def norm_MAE(y_true, y_pred):   
     """Normalized Mean Absolute Error (MAE) divided by y_true."""
     y_true = tf.cast(y_true, tf.float32)
     y_pred = tf.cast(y_pred, tf.float32)
     mae = tf.abs(y_true - y_pred)
     norm_mae = mae / tf.maximum(y_true, 1e-10)  # Avoid division by zero
     return tf.reduce_mean(norm_mae, axis=-1)
-
-def norm_MSE(y_true, y_pred):
-    """Normalized Root Mean Square (RMS) divided by y_true."""
-    y_true = tf.cast(y_true, tf.float32)
-    y_pred = tf.cast(y_pred, tf.float32)
-    rms = tf.square(y_true - y_pred)
-    norm_rms = rms / tf.maximum(tf.square(y_true), 1e-10)  # Avoid division by zero
-    return tf.reduce_mean(norm_rms, axis=-1)
 
 def snorm_MAE(y_true, y_pred):
     """Square Root Normalized Mean Absolute Error (MAE) divided by sqrt(y_true)."""
@@ -421,11 +413,19 @@ def snorm_MAE(y_true, y_pred):
     snorm_mae = mae / tf.maximum(tf.sqrt(y_true), 1e-10)  # Avoid division by zero
     return tf.reduce_mean(snorm_mae, axis=-1)
 
+def norm_MSE(y_true, y_pred):
+    """Normalized Root Mean Square (RMS) divided by y_true."""
+    y_true = tf.cast(y_true, tf.float32)
+    y_pred = tf.cast(y_pred, tf.float32)
+    rms = tf.square(y_true - y_pred)
+    norm_rms = rms / tf.maximum(tf.square(y_true), 1e-10)  # Avoid division by zero
+    return tf.reduce_mean(norm_rms, axis=-1)
+
 def snorm_MSE(y_true, y_pred):
     y_true = tf.cast(y_true, tf.float32)
     y_pred = tf.cast(y_pred, tf.float32)
     rms = tf.square(y_true - y_pred)
-    snorm_rms = rms / tf.maximum(tf.sqrt(y_true), 1e-10)  # Avoid division by zero
+    snorm_rms = rms / tf.maximum(y_true , 1e-10)  # Avoid division by zero
     return tf.reduce_mean(snorm_rms, axis=-1)
 
 def snorm_RMS(y_true, y_pred):
@@ -433,7 +433,7 @@ def snorm_RMS(y_true, y_pred):
     y_true = tf.cast(y_true, tf.float32)
     y_pred = tf.cast(y_pred, tf.float32)
     rms = tf.square(y_true - y_pred)
-    snorm_rms = rms / tf.maximum(tf.sqrt(y_true), 1e-10)  # Avoid division by zero
+    snorm_rms = rms / tf.maximum(y_true, 1e-10)  # Avoid division by zero
     return tf.sqrt(tf.reduce_mean(snorm_rms, axis=-1))
 
 def norm_RMS(y_true, y_pred):
@@ -441,7 +441,7 @@ def norm_RMS(y_true, y_pred):
     y_true = tf.cast(y_true, tf.float32)
     y_pred = tf.cast(y_pred, tf.float32)
     rms = tf.square(y_true - y_pred)
-    snorm_rms = rms / tf.maximum(y_true, 1e-10)  # Avoid division by zero
+    snorm_rms = rms / tf.maximum(tf.square(y_true), 1e-10)  # Avoid division by zero
     return tf.sqrt(tf.reduce_mean(snorm_rms, axis=-1))
 
 def norm_Huber(d):
