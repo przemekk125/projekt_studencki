@@ -168,3 +168,11 @@ for model, name in zip(models,names):
     print(f"Saving model {name}")
     RMS, ME, MAE, normMAE = Metrics(y_true, y_pred, Energies)
     SaveModel(ME,MAE,normMAE,RMS,name, model)
+
+    # Saving model history to CSV
+    combined_array = np.vstack(list(history.history.values())).T
+    header = list(history.history.keys())
+    with open(f"{name}_history"+'.csv', mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerows(combined_array)
