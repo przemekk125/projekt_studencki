@@ -155,12 +155,12 @@ for model, name in zip(models,names):
             validation_data=val_dataset,
             epochs=20,
             callbacks=[early_stopping,tboard_callback],
-            verbose=0
+            verbose=2
             )
         #Generowanie danych
-        y_pred=model.predict(test_ds).flatten()
+        y_pred=model.predict(test_ds,verbose=0).flatten()
         y_true = np.array([label.numpy() for _, label in test_ds]).flatten()
-        y_pred2=model.predict(test_ds2).flatten()
+        y_pred2=model.predict(test_ds2,verbose=0).flatten()
         y_true2 = np.array([label.numpy() for _, label in test_ds2]).flatten()
         y_true=np.concatenate((y_true,y_true2),axis=0)
         y_pred=np.concatenate((y_pred,y_pred2),axis=0)
