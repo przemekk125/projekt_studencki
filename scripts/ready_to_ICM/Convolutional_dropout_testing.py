@@ -149,7 +149,7 @@ hyperparameters = [ [[0.2,0,0],[0,0,0],False], [[0,0.2,0],[0,0,0],False], [[0,0,
 Models = []
 
 for parm in hyperparameters:
-    Models.append(GetModel(convFilters=[32,32,16],denseNeurons=[64,32,16], ConvDropout = np.array(parm[0]), denseDropout = np.array(parm[1]), SpatialDropout=parm[2],LossFunction=snorm_MSE))
+    Models.append(GetModel(convFilters=[32,32,16],denseNeurons=[64,32,16], convDropout = np.array(parm[0]), denseDropout = np.array(parm[1]), SpatialDropout=parm[2],LossFunction=snorm_MSE))
     
 names=['Chonky_conv_Dropout(1,0.2)','Chonky_conv_Dropout(2,0.2)','Chonky_conv_Dropout(3,0.2)','Chonky_conv_SDropout(1,0.2)','Chonky_conv_SDropout(2,0.2)','Chonky_conv_SDropout(3,0.2)']
 
