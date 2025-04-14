@@ -1,7 +1,7 @@
 Testowałem różne dropouty:
 1) konwolucyjne:
 testy polegały na wrzuceniu 0.2 dropoutu/spatial_dropoutu do pojedynczych warstw konwolucyjnych
-zauważalny efekt wystąpił przy wrzuceniu 0.2 dropoutu do trzeciej konwolucyjnej -> model oszalał.
+zauważalny efekt wystąpił przy wrzuceniu 0.2 dropoutu do trzeciej konwolucyjnej -> model trochę ześwirował.
 
 2) gęste:
 testy polegały na wrzuceniu 0.5 dropoutu do pojedynczych warstw gęstych. Modele dostały takiego gonga, że sie nie pozbierały. 
