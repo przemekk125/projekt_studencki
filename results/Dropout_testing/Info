@@ -6,3 +6,4 @@ zauważalny efekt wystąpił przy wrzuceniu 0.2 dropoutu do trzeciej konwolucyjn
 2) gęste:
 testy polegały na wrzuceniu 0.5 dropoutu do pojedynczych warstw gęstych. Modele w których droput dotyczył warstwy 1 i 2 dostały takiego gonga, że sie nie pozbierały. 
 Model w którym dropout wrzucono do trzeciej warstwy gęstej nie ześwirował, nauczył się podobnie do modelu bez dropoutu.
+Wygląda na to, że dla warstwy 1 i 2 dropout 0.5 to za dużo, a na ostatniej nie zrobił większej różnicy.
