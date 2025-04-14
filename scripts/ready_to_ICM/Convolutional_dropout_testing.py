@@ -85,7 +85,7 @@ def GetModel(convFilters:np.array,denseNeurons:np.array,convDropout:np.array, de
                 loss=LossFunction)
     return model
 
-def SaveModel(a,b,c,d, filename,model, history):
+def SaveModel(a,b,c,d, filename,model):
     combined_array = np.vstack((a, b, c, d)).T
 
     # Step 2: Define the header for the CSV file
