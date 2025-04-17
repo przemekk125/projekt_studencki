@@ -1,0 +1,9 @@
+Testowanie BatchNormalization z rózną regularyzacją:
+
+Wszystkie modele mają BatchNormalization za każdą warstwą konwolucyjną (przed jej funkcją aktywacji)
+
+Opis modeli:
+nazwa - regularyzacja warstw Conv, regularyzacja warstw Dense
+reg1 - L2(1e-4), L1L2(l1=1e-5, l2=1e-3)
+reg2 - L2(1e-3), L1L2(l1=1e-3, l2=1e-3)
+reg3 - L2(1e-2), L1L2(l1=1e-4, l2=1e-3)
