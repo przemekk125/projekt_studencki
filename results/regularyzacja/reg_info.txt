@@ -14,6 +14,6 @@ model4
 reg_conv = regularizers.l2(1e-4)
 reg_dense = regularizers.L2(1e-3)
 
-model
+model5
 reg_conv = regularizers.l2(1e-4)
 reg_dense = regularizers.L1(1e-4)
