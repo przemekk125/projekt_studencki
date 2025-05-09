@@ -24,7 +24,7 @@ Testowane kierunki:
 * regularyzacja CONV- najlepiej wypada regularyzacja L2 z wartością 1e-4
 * regularyzacja Dense - najlepiej wypada regularyzacja L1L2 (L1=1e-3, L2=1e-2) lub L2 (1e-3)
 * Batch Normalization - wydaje się że poprawia wyniki
-* Dropout - DOPISAĆ
+* Dropout - Trzeba ostrożnie dobierać wartości. Testy wykazały, że najlepszy efekt dawało nałożenie dropoutu 0.2 na trzecią warstwę konwolocyjną. Narzucenie dropoutu rzędu 0.2 na warstwy gęste także delikatnie polepszyło zachowanie modelu. W kontekście warstw konwolucyjnycj, paradoksalnie 'klasyczny' dropout wydawał się działać lepiej niż tzw. 'spatial dropout'
 
 Najlepszy model:
 TUTAJ DAĆ SPECYFIKACJE MODELU
