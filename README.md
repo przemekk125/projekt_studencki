@@ -27,7 +27,7 @@ Testowane kierunki:
 * Dropout - Trzeba ostrożnie dobierać wartości. Testy wykazały, że najlepszy efekt dawało nałożenie dropoutu 0.2 na trzecią warstwę konwolocyjną. Narzucenie dropoutu rzędu 0.2 na warstwy gęste także delikatnie polepszyło zachowanie modelu. W kontekście warstw konwolucyjnycj, paradoksalnie 'klasyczny' dropout wydawał się działać lepiej niż tzw. 'spatial dropout'
 
 Najlepszy model:
-TUTAJ DAĆ SPECYFIKACJE MODELU
+convFilters=[32,32,16], denseNeurons=[64,32,16], reg_conv=regularizers.l2(1e-4), reg_dense=regularizers.L1L2(l1=1e-3, l2=1e-2), LossFunction=snorm_MSE, Batch Normalization po każdej warstwie konwolucyjnej.
 
 Dalsze propozycje:
 
