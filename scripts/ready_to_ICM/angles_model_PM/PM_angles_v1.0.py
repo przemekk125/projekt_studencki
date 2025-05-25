@@ -194,7 +194,7 @@ for model, name in zip(models,names):
         history = model.fit(
             train_dataset,
             validation_data=val_dataset,
-            epochs=1,
+            epochs=20,
             callbacks=[tboard_callback],
             verbose=0
             )
